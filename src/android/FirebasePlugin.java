@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.core.app.NotificationManagerCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Base64;
 import android.util.Log;
 
@@ -188,12 +188,6 @@ public class FirebasePlugin extends CordovaPlugin {
             return true;
         } else if (action.equals("clearAllNotifications")) {
             this.clearAllNotifications(callbackContext);
-            return true;
-        } else if (action.equals("logMessage")) {
-            logMessage(args, callbackContext);
-            return true;
-        } else if (action.equals("sendCrash")) {
-            sendCrash(args, callbackContext);
             return true;
         }
 
@@ -493,26 +487,6 @@ public class FirebasePlugin extends CordovaPlugin {
         });
     }
 
-    private void logMessage(final JSONArray data,
-                        final CallbackContext callbackContext) {
-
-        String message = data.optString(0);
-        Crashlytics.log(message);
-        callbackContext.success();
-    }
-
-    private void sendCrash(final JSONArray data,
-						   final CallbackContext callbackContext) {
-
-		this.cordova.getActivity().runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				throw new RuntimeException("This is a crash");
-			}
-		});
-	}
-
-
     private void setCrashlyticsUserId(final CallbackContext callbackContext, final String userId) {
         cordova.getActivity().runOnUiThread(new Runnable() {
             public void run() {
@@ -691,7 +665,7 @@ public class FirebasePlugin extends CordovaPlugin {
         cordova.getThreadPool().execute(new Runnable() {
             public void run() {
                 try {
-                    FirebaseRemoteConfig.getInstance().setDefaults(defaultsToMap(defaults));
+                        FirebaseRemoteConfig.getInstance().setDefaults(defaultsToMap(defaults));
                     callbackContext.success();
                 } catch (Exception e) {
                     Crashlytics.logException(e);
@@ -755,7 +729,7 @@ public class FirebasePlugin extends CordovaPlugin {
                             try {
                                 String verificationId = null;
                                 String code = null;
-
+								
                                 Field[] fields = credential.getClass().getDeclaredFields();
                                 for (Field field : fields) {
                                     Class type = field.getType();
@@ -822,7 +796,7 @@ public class FirebasePlugin extends CordovaPlugin {
                             callbackContext.sendPluginResult(pluginresult);
                         }
                     };
-
+	
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(number, // Phone number to verify
                             timeOutDuration, // Timeout duration
                             TimeUnit.SECONDS, // Unit of timeout
@@ -835,7 +809,7 @@ public class FirebasePlugin extends CordovaPlugin {
             }
         });
     }
-
+	
     private static String getPrivateField(PhoneAuthCredential credential, Field field) {
         try {
             field.setAccessible(true);

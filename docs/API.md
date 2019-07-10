@@ -352,13 +352,3 @@ window.FirebasePlugin.setAnalyticsCollectionEnabled(true); // Enables analytics 
 
 window.FirebasePlugin.setAnalyticsCollectionEnabled(false); // Disables analytics collection
 ```
-
-## sendCrash
-
-Simulates (causes) a fatal native crash.
-
-```javascript
-window.FirebasePlugin.logMessage("about to send a crash for testing!");
-window.FirebasePlugin.sendCrash();
-```
-
